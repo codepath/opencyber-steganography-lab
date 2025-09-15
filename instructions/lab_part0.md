@@ -5,9 +5,9 @@
 Lab Parts:
 
 0. [Set up the lab environment using Docker.](./lab_part0.md) (✅ You are here!)
-1. [Learn: TODO](./lab_part1.md)
-2. [Apply: TODO](./lab_part2.md)
-3. [Challenge: TODO](./lab_part3.md)
+1. [Learn: Metadata, Files, and Images](./lab_part1.md)
+2. [Apply: Metadata Manipulation in CyberChef](./lab_part2.md)
+3. [Challenge: Exfiltrate Data with Steghide](./lab_part3.md)
 
 ## Part 0 | Set up the lab environment using Docker
 

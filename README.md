@@ -8,7 +8,7 @@ Want to jump into the lab? Navigate to the [Part 0 Instructions](./instructions/
 
 ## About this Lab
 
-<img src="TODO" style="width: 60%; min-width: 350px;" alt="Screenshot of provided Docker Container printing welcome message for Steganography Lab"></img>
+<img src="https://i.imgur.com/sKGbC8h.png" style="width: 60%; min-width: 350px;" alt="Screenshot of provided Docker Container printing welcome message for Steganography Lab"></img>
 
 The Steganography Lab is designed to teach you about files, metadata, and the techniques used to hide information within various file types. You'll gain hands-on experience with real-world scenarios and learn how steganography can be used for both legitimate and malicious purposes. This will help you secure your own data and understand the potential risks involved when working with different file types.
 
@@ -22,9 +22,9 @@ The Steganography Lab is designed to teach you about files, metadata, and the te
 ### Lab Activities
 
 0. [Set up the lab environment using Docker.](./instructions/lab_part0.md)
-1. [Learn: TODO](./instructions/lab_part1.md)
-2. [Apply: TODO](./instructions/lab_part2.md)
-3. [Challenge: TODO](./instructions/lab_part3.md)
+1. [Learn: Metadata, Files, and Images](./instructions/lab_part1.md)
+2. [Apply: Metadata Manipulation in CyberChef](./instructions/lab_part2.md)
+3. [Challenge: Exfiltrate Data with Steghide](./instructions/lab_part3.md)
 
 ## Technical Details
 
@@ -38,10 +38,15 @@ In the provided Docker container, you will find all the necessary tools and depe
 - `wget` - A utility for downloading files from the web
 - `unzip` - A utility for extracting compressed files
 
-In addition, you may use built-in commands such as `ls`, `cd`, and `cat` to navigate and manipulate files within the container.
+In addition, you may use built-in commands such as `ls`, `cd`, `echo`, and `cat` to navigate and manipulate files within the container.
 
 ### Provided Files
 
 You'll find the following files in your lab environment:
 
-- `images.zip` - A ZIP archive containing various image files for steganography testing
+- `01_beach.jpg   ` - A JPG image file for steganography testing
+- `02_valley.jpg  ` - A JPG image file for steganography testing
+- `03_reef.jpg    ` - A JPG image file for steganography testing
+- `04_hedgehog.jpg` - A JPG image file for steganography testing
+- `05_squirrel.jpg` - A JPG image file for steganography testing
+- `06_fox.jpg     ` - A JPG image file for steganography testing

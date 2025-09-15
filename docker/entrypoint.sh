@@ -23,7 +23,7 @@ echo "GETTING STARTED:"
 echo -e " ${g}*${n} Steghide is already installed (use 'steghide' to run)."
 echo -e " ${g}*${n} Provided files are in ~/ (use 'ls -l' to view)."
 echo -e " ${g}*${n} Follow along with the instructions at:"
-echo -e "\thttps://example.com/example-lab-instructions"
+echo -e "\thttps://github.com/codepath/opencyber-steganography-lab"
 echo
 echo "VIEWING IMAGES:"
 echo -e "\e[3m (Use either of the following options, according to your preference)\e[0m"

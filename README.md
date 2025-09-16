@@ -33,20 +33,8 @@ The Steganography Lab is designed to teach you about files, metadata, and the te
 In the provided Docker container, you will find all the necessary tools and dependencies pre-installed. This includes:
 
 - `bash` - A Unix shell and command language (this is how you will interact with the container)
+- `exiftool` - A tool for reading and writing metadata in image files
 - `steghide` - A tool for hiding and extracting data within image files
-- `less` - A text file viewer
-- `wget` - A utility for downloading files from the web
-- `unzip` - A utility for extracting compressed files
+- `chafa` - A tool for converting images to ASCII art (optional)
 
 In addition, you may use built-in commands such as `ls`, `cd`, `echo`, and `cat` to navigate and manipulate files within the container.
-
-### Provided Files
-
-You'll find the following files in your lab environment:
-
-- `01_beach.jpg   ` - A JPG image file for steganography testing
-- `02_valley.jpg  ` - A JPG image file for steganography testing
-- `03_reef.jpg    ` - A JPG image file for steganography testing
-- `04_hedgehog.jpg` - A JPG image file for steganography testing
-- `05_squirrel.jpg` - A JPG image file for steganography testing
-- `06_fox.jpg     ` - A JPG image file for steganography testing

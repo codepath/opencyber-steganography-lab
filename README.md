@@ -23,7 +23,7 @@ The Steganography Lab is designed to teach you about files, metadata, and the te
 
 0. [Set up the lab environment using Docker.](./instructions/lab_part0.md)
 1. [Learn: Metadata, Files, and Images](./instructions/lab_part1.md)
-2. [Apply: Metadata Manipulation in CyberChef](./instructions/lab_part2.md)
+2. [Apply: Data Manipulation in CyberChef](./instructions/lab_part2.md)
 3. [Challenge: Exfiltrate Data with Steghide](./instructions/lab_part3.md)
 
 ## Technical Details

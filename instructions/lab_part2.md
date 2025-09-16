@@ -6,12 +6,12 @@ Lab Parts:
 
 0. [Set up the lab environment using Docker.](./lab_part0.md)
 1. [Learn: Metadata, Files, and Images](./lab_part1.md)
-2. [Apply: Metadata Manipulation in CyberChef](./lab_part2.md) (✅ You are Here!)
+2. [Apply: Data Manipulation in CyberChef](./lab_part2.md) (✅ You are Here!)
 3. [Challenge: Exfiltrate Data with Steghide](./lab_part3.md)
 
-## Part 2 | Apply: Metadata Manipulation in CyberChef
+## Part 2 | Apply: Data Manipulation in CyberChef
 
-**Estimated Time:** 60 minutes
+**Estimated Time:** 45 minutes
 
 **Environment:** Your web browser
 
@@ -21,105 +21,90 @@ Lab Parts:
 
 ## Instructions
 
-By the end of this lab you will be able to...
+### Step 0: Reasons for Data Manipulation
 
-- [ ] Use Cyberchef to reveal a hidden message within an image.
-- [ ] Use Cyberchef to hide a message within an image.
+Put simply, data manipulation is the process of adjusting, changing, or organizing data. 
 
-#### Step 1: Reveal A Hidden Message That's *Just* Out Of Sight 
+Any time you change a file, you are manipulating data. Typically, these manipulations are completely normal, like adding text to an email, or changing a photo from color to gray-scale. Metadata usually updates automatically, such as the "Last Edited Date" updating when you save a document.
 
-In this step, we'll learn how to perform steganography and hide data within an image's height metadata.
+However, some data manipulations can be more suspicious, such as altering a document to hide its original content, or embedding hidden messages within an image. This can create files that **seem** totally normal, but actually have secret data (or even programs) buried within them!
 
-- [ ] Clear Cyberchef of any recipes and any input.
-- [ ] Upload the imaged called **Hidden** into the Input Field.
-- [ ] Go ahead and click the *Magic Wand* that appears in the Output field and render the image. 
-- [ ] Repeat your previous lab steps in order to find the Start of Frame hex values as well as the image height and image width.
-- [ ] Note the image height and convert the value to decimal.
-- [ ] You will need to increase the metadata value that the computer reads for the image height by 50 in order to see the secret text. 
-- [ ] It is possible to have CyberChef copy the hex from the 'Output' pane to the 'Input' pane by using the *Replace Input with output* button -- now we can easily update hex values in the Input pane.
+### Example 1: False Dimensions
 
-![jpg CyberChef Img to Hex | 500](lab_6/secret_from_hex.png)
+For our first example, we'll be looking at a case where the **metadata** was modified in order to hide a secret in a file. To do this, our actor used the image's dimensions metadata to mislead image viewers.
 
-- [ ] By reversing the order of the CyberChef recipes we can then render the new image to reflect the new height of the updated SOF hex string
+#### Finding the Hidden Message
 
-- [ ] Change the hex values for the image's height to the new, increased value.
+- [ ] Download [hidden.jpg](../docker/part2/hidden.jpg).
+- [ ] Clear Cyberchef of any recipes and input, then load the image `hidden.jpg` and use the *Magic Wand* to preview it.
+  - Does the image look normal? We think so!
+- [ ] Convert the image to hex format.
+- [ ] Check the image for its dimensions, by looking for the Start of Frame (SOF) marker in the hex.
 
-![jpg Cyberchef Hex to Rendered Img | 500](lab_6/secret_hex_to_img.png)
+> [!TIP]
+> If you need a refresher on JPEG dimensions encoding, you can view an example in Part 1 of this Lab.
 
-- [ ] Scroll down in your Output field and you should see something that wasn't visible before!
-  
-  *Note: the actual image has not changed - only the metadata for the dimensions that the computer uses to determine what to display!*
+Once you have the dimensions for the image, let's try modifying them and see what changes!
 
-^^^
-**Click me for help with revealing this hidden message.**
-^^^
+- [ ] Use the *Replace input with Output* button in the top-right of the Output pane, to move the hex values into the Input pane.
+- [ ] Disable the "To Hex" Recipe, and set the "Render Image" Recipe to Hex format.
 
-According to the information from Step 1, the Start of Frame marker is FF C0.
+Once you've done this, you should have the hex in your Input pane, and see the image displayed in the Output pane.
 
-![startOfFrame | 500](lab_6/startOfFrame.jpg)
+- [ ] Change the hex values to add 50 pixels to the image's height.
 
-- [ ] Hold **Ctrl+F* to find `FF C0` within the Output field.
-  
-According to the metadata information for jpg hex values, we need to make note of the next 7 pairs of hex values (*9 pairs total*).
+If you did this correctly, the image should now be 50 pixels taller... and **you should be able to see the hidden message!**
 
-![jpg Hex Values | 500](lab_6/jpgHexValues.jpg)
+> [!NOTE]
+> The actual data for the image never changed - the metadata was just "lying" about how tall the image ACTUALLY was, and now we've restored it!
 
-- [ ] The hex values you should make note of are: `ff c0 00 11 08 01 3d 01 54` 
+<details>
+  <summary>Hint 1</summary>
+  In Part 1, we found that the SOF marker before the image dimensions was `ff c0 00 11 08`. Does this help you locate the image dimensions in the hex data?
+</details>
 
-![hidden Image Hex Values | 250](lab_6/hiddenImagehexValues.jpg)
+<details>
+  <summary>Hint 2</summary>
+  The height is represented as `01 3d`, which translates to 317 pixels. To add 50 to the height, you'll need to change it to 367 -- which is `01 6f` in hex.
+</details>
 
-- [ ] Of those values, note that the image height is `01 3d`.
-- [ ] Using a [hex to decimal converter](https://www.binaryhexconverter.com/hex-to-decimal-converter) gives us the decimal value of 317.
-- [ ] Increase this value by 50. Now we have the decimal value of 367.
-- [ ] Convert 367 back to hex using the same online number converter. We get `01 6f`.
-- [ ] Copy all of the output hex values and click the trash icons to clear the Input and Recipe panels.
-- [ ] Find the "From Hex" recipe and drag it into the Recipe panel.
-- [ ] Paste your copied hex values into the Input panel.
-- [ ] Click on the *Magic Wand* icon to render the image.
-- [ ] In the Input field, locate the Start of Frame, height and width data.
-- [ ] Change the hex values for the image's height to the new, increased value.
+#### Try it Out
 
+Next, try to reverse the above process to create your own hidden message image. Here are the basic steps:
 
- 
-From This . . .   
-
-![hiddenImageHexValues | 250](lab_6/hiddenImagehexValues.jpg)
-
- To This . . .  
-
- ![changed jpg Values | 250](lab_6/changedJpgValues.jpg) 
- 
- 
-
-- [ ] Scroll down in your Output field and you should see the revealed hidden message!
-
-![revealed Hidden Message | 500](lab_6/revealedHiddenMessage.jpg)
-
-^^^
-
-**Your turn! Reverse the above process to create a hidden message!**
-
-- [ ] Create a simple image with text outside the image "frame". You can do this using a simple image editor such as MS Paint, Adobe Photoshop, etc.  *❗️ Be sure to save it as a JPG or JPEG file!*
+- [ ] Use Paint, Canva, or another simple image editor to add a message at the edge of an image, then save it as a `jpg` file.
 - [ ] Upload the image to Cyberchef and find the Start of Frame, image height and image width hex values.
-- [ ] Locate the hex values for the image height (or width depending on where you put your text that you want to hide).
-- [ ] Use a hex to decimal converter to get the decimal value for the height (or width).
-- [ ] Decrease the value and convert the new value back to hexadecimal.
-- [ ] Copy all of the Output hex data.
-- [ ] Clear out all Recipes and Input fields.
-- [ ] Drag out the "From Hex" recipe into the Recipe panel.
-- [ ] Paste your copied hex values into the Input field.
-- [ ] Click the "Magic Wand" in the Output field.
-- [ ] Locate the required metadata for the image height (or width).
-- [ ] Change the image height values to the new, decreased hex values.
-- [ ] Scroll down in your Output panel and you'll see that your secret text is gone!
-- [ ] Save the output by clicking on the Save icon in the Output panel!
+- [ ] Change the image height or width hex values to hide your message.
+- [ ] Click *Save* in the Output panel to download your modified file!
 
-:::success
-🎉 Congratulations 🎉 
+Pretty sneaky! If you're doing this Lab with a friend, try trading images and finding each other's messages.
 
-You've completed your sixth lab AND stretch goals! 🚀  
-:::
+### Example 2: Buried Within
 
-## Further Reading
+In this part, you will learn how to find files hidden within the image itself. This is the most common definition of **steganography** -- the practice of concealing or hiding a file, message, or other data within another file. 
 
-- [Steganography for CTFs](https://ctfs.github.io/resources/topics/steganography/README.html)
+It can enable individuals to covertly communicate data and can be used to bypass content filters or Data Loss Prevention. Fortunately, CyberChef makes it pretty easy to check for basic steganography. Let's go through an example.
+
+- [ ] Download [ohNo.jpg](../docker/part2/ohNo.jpg).
+- [ ] Delete all recipes and images from the Input field.
+- [ ] Open the image `ohNo.jpg` in the Input field and use the *Magic Wand* to render the image.
+- [ ] Open the **Extractors** tab, find and pull out the "Extract Files" Recipe.
+
+You might be surprised how much can be hidden in an image!
+
+- [ ] Find the embedded `zip` file that's `1174` bytes in size, and click the 'Up' icon to move it to the Input pane.
+- [ ] Use a Recipe to unzip the file and view the `txt` files inside, then unscramble the words to construct the hidden message!
+
+<details>
+  <summary>Hint 1</summary>
+  You'll need to disable the "Extract Files" recipe, and add the "Unzip" recipe to open the `zip`.
+</details>
+
+<details>
+  <summary>Answer</summary>
+  Inside the zip is a bunch of text files. When unscrambled, the message within reads: *Meet at Joe's Tavern Make sure you have the password 3Pota0!*
+</details>
+
+Welcome to the world of steganography! If you want to learn more about this fascinating topic, there are plenty of resources available. Use a search engine or AI assistant to start exploring further!
+
+In [part 3](./lab_part3.md), we'll learn to use a terminal utility called `steghide` to extract password-protected hidden data from images and other files.

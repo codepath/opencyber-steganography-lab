@@ -1,16 +1,16 @@
 # Image names
-FINAL_IMAGE=opencyber-steganography-lab:latest
+IMAGE_NAME=opencyber-steganography-lab
 
 # Default target: build all images
 all: student
 
 # Build the final lab image (reuses cached builder layers)
 student:
-	docker build -t $(FINAL_IMAGE) -f docker/Dockerfile .
+	docker build -t $(IMAGE_NAME):local -f docker/Dockerfile .
 
 # Run an interactive container from the final student image
 run:
-	docker run --rm -it -p 8080:8080 $(FINAL_IMAGE)
+	docker run --rm -it -p 8080:8080 $(IMAGE_NAME):local
 
 # Clean up dangling images (optional)
 clean:
@@ -22,4 +22,4 @@ cyberchef:
 
 # Run the lab image from GitHub Container Registry
 ghcr:
-	docker run --rm -it ghcr.io/codepath/$(FINAL_IMAGE)
+	docker run --rm -it -p 8080:8080 ghcr.io/codepath/$(IMAGE_NAME):latest

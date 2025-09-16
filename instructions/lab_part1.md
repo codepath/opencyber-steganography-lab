@@ -6,12 +6,12 @@ Lab Parts:
 
 0. [Set up the lab environment using Docker.](./lab_part0.md)
 1. [Learn: Metadata, Files, and Images](./lab_part1.md) (✅ You are here!)
-2. [Apply: Metadata Manipulation in CyberChef](./lab_part2.md)
+2. [Apply: Data Manipulation in CyberChef](./lab_part2.md)
 3. [Challenge: Exfiltrate Data with Steghide](./lab_part3.md)
 
 ## Part 1 | Learn: Metadata, Files, and Images
 
-**Estimated Time:** 60 minutes
+**Estimated Time:** 45 minutes
 
 **Environment:** Your web browser
 
@@ -21,210 +21,139 @@ Lab Parts:
 
 ## Instructions
 
-By the end of this lab you will be able to...
-- [ ] Understand the difference between data and metadata
-- [ ] Use Cyberchef to determine information about images including date, time, location, and who took them
-- [ ] Use Cyberchef to extract embedded data files from an image
+For Part 1 of the Steganography Lab, we'll be learning about the difference between data and metadata, which is key for understanding how steganography works. Don't worry- We'll talk about actual steganography in Parts 2-3 of this lab!
 
-#### Step 0: Set up
+### Section 1: Files, Data, and Encoding
 
 In this step, we'll download the folder of images we'll use in Cyberchef.
 
-- [ ] Download this folder of images: @[[lab_6/Lab_6_Images.zip]]
-- [ ] Open Cyberchef in your web browser (on your host machine is fine, no need to use your Course VM)
-
-🎯 **Checkpoint 0**: Cyberchef should be open and ready.
- 
-#### Step 1: Investigate The Data In An Image
-
-In this step, you will open the image called **"simpleImage"** and investigate it's data in Cyberchef.
-
-- [ ] Open the simpleImage in the "Input" area of Cyberchef
-- [ ] You will see a "magic wand" appear next to the "Output" title. Go ahead and click on the magic wand to render the image. 
+- [ ] Open Cyberchef in your web browser (see [Part 0](./lab_part0.md) for setup instructions)
+- [ ] Download [simpleImage](../docker/part1/simpleImage).
+- [ ] In the "Input" area of Cyberchef, upload `simpleImage`. 
+- [ ] Click the *Magic Wand* in the Output pane to render the image.
   
- ![magicWand | 250](lab_6/magicWand.jpg)
+#### Step 1.1: Switch to Hexadecimal
 
-**Now let's actually look at the binary and hex data behind the image.**
+To learn more about this image, we'll need to look at the underlying data.
 
-- [ ] Turn off (or pause) the "Render Image" Recipe. 
+- [ ] In the Recipes pane, click the Disable Icon 🚫 to turn off the "Render Image" Recipe.
+- [ ] In the Operations pane on the left, search for the "To Hex" Recipe.
+- [ ] Drag and drop it into the Recipe area.
 
-![stopRecipe | 250](lab_6/stopRecipe.jpg)
+You should see something like this:
 
-- [ ] Find the "To Binary" recipe and drop it into the Recipe area.
+```hex
+ff d8 ff e1 00 16 45 78 
+69 66 00 00 4d 4d 00 2a 
+00 00 00 08 00 00 00 00 
+00 00 ff ed 00 84 50 68
+```
 
-**What Am I Looking At?**
+> [!TIP]
+> If you only see one line of Output, go to Options in the top right and toggle the "Word wrap the input and output" check box a couple of times.
 
-All of these 1s and 0s make up the image! There is actually two different pieces of information held within all of the 1s and 0s: **metadata** and pixel data. ***Metadata***, simply put, is *data about data*. 
+These numbers and letters you're looking at are **hexadecimal** (base-16) representations of the underlying binary data, in which each digit represents a value between 0 and 15. 
 
-Some of those 1s and 0s tell the computer information about your image such as the dimensions the image should be as well as the date, time, and location that the image was taken or created, and even information about the type of camera that took the picture!
+> [!NOTE]
+> If you're unfamiliar with hexadecimal, try doing some research using a search engine or AI tool to learn more. Exploring unfamiliar formats and concepts is a key part of practicing cybersecurity.
 
-Most of the 1s and 0s is pixel data. This tells the computer what color each individual pixel should be. For example, a pure red pixel would have the following data: `11111111 00000000 00000000`. That's just for ONE pixel!
+#### Step 1.2: Analyzing File Data
 
-Another way to look at all of this image data is through hexadecimal values. The data doesn't change, just how each piece of data is represented will change. Hex is easier for non-computers, people, to read and understand - all of those 1s and 0s start to blur together!
+Alright, it's time to start deciphering this data to learn about the file.
 
-:::ai
+##### Challenge 1: File Type
 
-![AI opportunity|350](ai/ai_opportunity.png)
+- [ ] For your first task, identify the type of `simpleImage` based on the first four bytes: `ff d8 ff e1`
+- You can use this [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures) to help you.
 
-^^^[=]
-*Use AI to explain unfamiliar terms→* pixel data, hex, binary
-^^^
+<details> 
+  <summary>Did you figure it out? Click here to see the answer.</summary>
+  `simpleImage` is a JPEG file!
+</details>
 
-Still kind of confused? Ask ChatGPT for a summary with some more examples, or ask any additional conceptual questions you may have!
+##### Challenge 2: File Dimensions
 
-For example, you can ask:
+- [ ] For your second task, identify the dimensions of `simpleImage` based on the bytes: `ff c0 00 11 08 01 90 01 40`
+- [ ] Try it yourself first, then use the hints below as needed.
 
-> What is metadata in the context of images? <br>
-> What is pixel data in the context of images? <br>
-> What is the difference between binary and hex data?
+<details> 
+  <summary>Hint 1</summary>
+  To find the dimensions, you'll need to split the provided data:
+  - The first five bytes, `ff c0 00 11 08` are a marker for the Start of Frame (SOF) in JPEG files.
+  - The next four bytes, `01 90 01 40`, represent the height and width (in pixels) of the image.
+</details>
 
-^^^
-:::
+<details> 
+  <summary>Hint 2</summary>
+  The bytes `01 90 01 40` can also be split into two parts:
+  - The first two bytes, `01 90`, represent the height (in pixels) of the image.
+  - The last two bytes, `01 40`, represent the width (in pixels) of the image.
+</details>
 
-**Let's switch from looking at the image data in binary to hex.**
+<details> 
+  <summary>Hint 3</summary>
+  Try using `CyberChef` or an online hex-to-decimal converter to convert the hex values to decimal.
+</details>
 
-- [ ] Turn off (or pause) the "To Binary" Recipe.
-- [ ] Drop a "To Hex" recipe into the Recipe area.
+Think you've got it?
 
-Again, this is the same data but just in hexadecimal format.
+<details> 
+  <summary>Answer</summary>
+  The image is 320 x 400 pixels (w x h)
+  - `0x0190`: 400 (pixels)
+  - `0x0140`: 320 (pixels)
+</details>
 
-Let's find where some of that metadata is in the actual data in the Output area. 
 
-- [ ] Look through this information to find the hex value bytes for the "Start of Frame" of a JPEG image.
+If you want to explore further, try loading other files into Cyberchef and look at their file signatures. What did you find? Can you find dimensions of other JPEG files?
 
-^^^
-**Click for help with the Start of Frame task**
-^^^
+#### Step 1.2: Data vs. Metadata
 
-![startOfFrame | 700](lab_6/startOfFrame.jpg)
+We won't go through every byte, but the hex data in `simpleImage` breaks down into two categories:
 
-According to this information, the Start Of Frame for a jpg is 0xFF 0xC0. The "0x" let's us know that the value that follows is in hexadecimal. So what the values we need to find for the "Start of Frame" is FF C0.
+1: Information **about** the file:
+- File signature
+- Width and height in pixels
+- When it was created
+- When it was last modified
+- Camera information
 
-^^^
+2: Information **containing** the image:
+- Pixel data
 
-- [ ] Hold ***ctrl+F*** in the output field and search for the Marker Identifier of the Start of Frame.
-- [ ] Once you locate the Start of Frame values, take a look at the next sets of hex values to find more metadata such as the image height and image width. 
+In Cybersecurity, we would say that category 2 is the **data** that is actually contained within the file itself, and category 1 is the **metadata**. 
 
-![jpg Hex Values | 500](lab_6/jpgHexValues.jpg)
+### Section 2: Extract The Metadata with CyberChef
 
-^^^
-**Click for help with finding the SOF**
-^^^
+Knowing how to decipher a file's hex is handy, but we have tools that can make the process much faster. Let's learn to use Cyberchef to pull metadata out of files.
 
-![jpg Hex Values | 500](lab_6/simpleSOF.png)
+First, clean up from Step 1:
+- [ ] In the Recipe pane, use the Trash button to delete all recipes
+- [ ] In the Input pane, use the Trash button to delete the `simpleImage` data
+- [ ] Download [city.jpg](../docker/part1/city.jpg).
+- [ ] Load the `city.jpg` image in the Input pane
 
-*NOTE:*
-The image height and width are in hex values
+#### Step 2.1: `Get Time` Recipe 
 
-- [ ] The hex values you should make note of are: `ff c0 00 11 08 01 90 01 40` 
+Okay, let's try the obvious one first.
 
-- [ ] Can you figure out what these values are as integers?
+- [ ] Find and add the "Get Time" Recipe, then click the Magic Wand again to convert it into a human-readable format.
 
-  ` 0x0190 ==>  400 (pixels)`
+You'll see a date and time... but it's probably not the original creation date. It's the date you **downloaded** the image. We'll need a different recipe to find the original creation date.
 
-  ` 0x0140 ==>  320 (pixels)`
+#### Step 2.2: `Extract EXIF` Recipe
 
-- [ ] Do they match the values from the image metadata?
+Files bundle together their metadata in different formats. This file uses the popular `EXIF` format.
 
+- [ ] Replace your Recipes with the "Extract EXIF" Recipe, and use it to find the **creation date** of the image.
 
-^^^
+<details>
+  <summary>Click here for a hint</summary>
+  The "CreateDate" is likely showing in UNIX timestamp format (seconds since Jan 1, 1970). To convert it, you can create another Input in CyberChef, paste in the value, and use another CyberChef recipe called "From UNIX Timestamp" to translate it. 
+</details>
 
-- [ ] *Optional: Use an online [Hex to Decimal Converter](https://www.binaryhexconverter.com/hex-to-decimal-converter) to find out what the image height and image width are in decimal values.*
+> [!TIP]
+> Extracting EXIF data can reveal a lot about an image, including the camera settings and even the location where the photo was taken. 
+> Try uploading some of your own pictures - what EXIF data can you find in them?
 
-
-- [ ] Upload a few of your own images and find their Start of Frame, height, and width.
-
-But who wants to try to figure out **all** of the metadata by looking for it within the image data! That's what we have computers and tools like Cyberchef for!
-
-#### Step 2: Extract The Metadata 
-
-In this step, you will extract the metadata of images.
-
-- [ ] Delete all Recipes and delete any images from the Input field. 
-- [ ] Upload the **City** landscape image for the input.
-- [ ] The "Magic Wand" icon should appear again next to "Output". Go ahead and click it in order to render the image.
-- [ ] Find the "Get Time" Recipe.
-- [ ] The "Magic Wand" icon should appear again! Go ahead and click it. 
-
-**Ta da!** You found the date and time metadata that this image was ***downloaded***!
-
-*But wait ... when was the image **created?***
-
-Now let's find the "EXIF" data which is metadata that's more than just the date and time the image was downloaded. Let's see what other kind of information we can find this time!
-
-- [ ] Delete all recipes but keep the same "City" image from above.
-- [ ] Open the **Forensics** tab, find and drag the "Extract EXIF" recipe to the Recipe panel.
-- [ ] Look through the long list of information!
-- [ ] Can you figure out the actual creation date of the image?
-
-^^^
-**Click me for help with figuring out the image creation date.**
-^^^
-- [ ] Scroll down through all of the EXIF data and find the *"CreateDate"*.
-- [ ] Copy the value given.
-- [ ] Click the + icon in the Input field to add a new Input tab. 
-
-![add Input Icon | 250](lab_6/addInputIcon.jpg)
-
-- [ ] Click the "stop" icon on all recipes in the Recipe panel. 
-  
-![stopRecipe | 250](lab_6/stopRecipe.jpg)
-
-- [ ] Paste in the *CreateDate* value you copied.
-- [ ] The "Magic Wand" icon should appear. Go ahead and click it to see the translated date and time. *If the Magic Wand does **not** appear, find the "From UNIX Timestamp" recipe and drag it into the Recipe panel to get the translated creation date and time.*
-
-^^^
-
-- [ ] Upload a few of your own pictures taken by a digital camera or your phone.
-- [ ] Find the EXIF data!
-  
-#### Step 3: Hidden Files In Images
-
-In this step, you will learn how to find files hidden within the image itself!
-
-Steganography is the practice of concealing or hiding a file, message, or other data within another file. It can enable individuals to covertly communicate data and can be used to bypass content filters or Data Loss Prevention.
-
-With the use of tools, such as Cyberchef, it isn't that hard to find hidden files ... that is if you know you should be looking for them in the first place! That being said, let's use Cyberchef to find us some hidden files!
-
-- [ ] Delete all recipes and images from the Input field.
-- [ ] Open the image called **ohNo** in the Input field.
-- [ ] Click the "Magic Wand" icon to render the image and see what it looks like.
-- [ ] Open the **Extractors** tab, find and pull out the "Extract Files" Recipe.
-- [ ] Click on the different files that Cyberchef found embedded within the image.
-- [ ] Click the "download" icon for the largest embedded file.
-
-![downloadZip | 250](lab_6/downloadZip.jpg)
-
-- [ ] Navigate to where the file was downloaded and double-click the zip folder to open it up and see what is inside.
-- [ ] Continue opening folders until you come across hidden text files.
-- [ ] Can you figure out what secret message they were trying to hide in the image?
-
-^^^
-**Click me for help with extracting the files and finding the secret message.**
-^^^
-
-- [ ] Once you loaded the "Extract Files" recipe, you should have seen this: 
-
-![Extracted Files | 700](lab_6/ExtractedFiles.jpg)
-
-- [ ] Click on the various files. They will all basically show the same embedded files:
-
-![Embedded File Names | 700](lab_6/EmbeddedFileNames.jpg)
-
-- [ ] Select the largest file and click the "download" icon. 
-
-![download Zip | 250](lab_6/downloadZip.jpg)
-
-- [ ] Navigate to where the file was downloaded and double-click the zip folder to open it up. You should see a folder called "misc" within the zipped folder.
-
-![miscFolder | 700](lab_6/miscFolder.jpg)
-
-- [ ] Open the "misc" folder to find multiple text documents.
-
-![textDocs | 700](lab_6/textDocs.jpg)
-
-- [ ] Open each text document to reveal part of a secret message.
-- [ ] Puzzle piece the messages in the text documents together to reveal the following message: *Meet at Joe's Tavern Make sure you have the password 3Pota0!*
-
-^^^
-
+You now know how to explore files and extract valuable information from them. In [Part 2](./lab_part2.md), we'll look at how file data can be manipulated to hide information in ordinary-seeming files.

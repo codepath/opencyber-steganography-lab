@@ -14,10 +14,10 @@ The Steganography Lab is designed to teach you about files, metadata, and the te
 
 ### Learning Objectives
 
-- Run programs in a bash command line environment
-- Understand the concept of metadata and how to analyze it
-- Use Cyberchef to extract and manipulate data
-- Use Steghide to hide and extract data from image files
+- Understand basics of file encoding, data, and metadata
+- Manipulate file data and metadata using CyberChef
+- Analyze metadata in the terminal using ExifTool
+- Extract and embed hidden files inside JPG images with Steghide
 
 ### Lab Activities
 
@@ -30,7 +30,9 @@ The Steganography Lab is designed to teach you about files, metadata, and the te
 
 ### Provided Tools
 
-In the provided Docker container, you will find all the necessary tools and dependencies pre-installed. This includes:
+In Parts 1-2, you will use the popular tool Cyberchef.
+
+In Part 3, in the provided Docker container, you will find all the necessary tools and dependencies pre-installed. This includes:
 
 - `bash` - A Unix shell and command language (this is how you will interact with the container)
 - `exiftool` - A tool for reading and writing metadata in image files

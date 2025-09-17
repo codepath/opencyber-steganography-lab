@@ -1,6 +1,6 @@
 # Steganography Lab: Part 1
 
-[*(back to home)*](https://github.com/codepath/opencyber-password-lab)
+[*(back to home)*](https://github.com/codepath/opencyber-steganography-lab)
 
 Lab Parts:
 

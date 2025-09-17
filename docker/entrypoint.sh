@@ -20,6 +20,7 @@ echo
 echo -e "Welcome to the ${g}Steganography Lab${n} environment!"
 echo
 echo "GETTING STARTED:"
+echo -e " ${g}*${n} ExifTool is already installed (use 'exiftool' to run)."
 echo -e " ${g}*${n} Steghide is already installed (use 'steghide' to run)."
 echo -e " ${g}*${n} Provided files are in ~/ (use 'ls -l' to view)."
 echo -e " ${g}*${n} Follow along with the instructions at:"

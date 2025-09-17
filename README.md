@@ -8,7 +8,7 @@ Want to jump into the lab? Navigate to the [Part 0 Instructions](./instructions/
 
 ## About this Lab
 
-<img src="https://i.imgur.com/sKGbC8h.png" style="width: 75%; min-width: 350px;" alt="Screenshot of provided Docker Container printing welcome message for Steganography Lab"></img>
+<img src="https://i.imgur.com/vrDQ3ES.png" style="width: 75%; min-width: 350px;" alt="Screenshot of provided Docker Container printing welcome message for Steganography Lab"></img>
 
 The Steganography Lab is designed to teach you about files, metadata, and the techniques used to hide information within various file types. You'll gain hands-on experience with real-world scenarios and learn how steganography can be used for both legitimate and malicious purposes. This will help you secure your own data and understand the potential risks involved when working with different file types.
 

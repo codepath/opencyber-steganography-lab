@@ -18,7 +18,7 @@ clean:
 
 # Shortcut to Cyberchef image
 cyberchef: 
-	docker run -it -p 8080:80 ghcr.io/gchq/cyberchef:latest
+	docker run -it -p 8080:8080 ghcr.io/gchq/cyberchef:latest
 
 # Run the lab image from GitHub Container Registry
 ghcr:

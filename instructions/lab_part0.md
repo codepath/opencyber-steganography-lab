@@ -34,7 +34,7 @@ For Parts 1 and 2, you will use CyberChef running in a Docker container. For Par
 
 ### Parts 1–2: CyberChef
 
-- [ ] Run the CyberChef container with `docker run -it -p 8080:80 ghcr.io/gchq/cyberchef:latest`
+- [ ] Run the CyberChef container with `docker run -it -p 8080:8080 ghcr.io/gchq/cyberchef:latest`
 - [ ] Open your web browser and go to `http://localhost:8080` to access CyberChef.
 
 If the page loads, you are ready to [**proceed to Part 1**](./lab_part1.md).

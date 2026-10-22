@@ -40,3 +40,9 @@ In Part 3, in the provided Docker container, you will find all the necessary too
 - `chafa` - A tool for converting images to ASCII art (optional)
 
 In addition, you may use built-in commands such as `ls`, `cd`, `echo`, and `cat` to navigate and manipulate files within the container.
+
+## License
+
+The code in this repo (Dockerfile, Makefile, scripts, configuration) is licensed under the **Apache License 2.0**. The lab instructions and other teaching material are licensed under **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)**.
+
+You are free to use, adapt, and run this lab in your own courses, including commercially, as long as you credit CodePath and indicate what you changed. See [LICENSE](./LICENSE) for the terms that govern.

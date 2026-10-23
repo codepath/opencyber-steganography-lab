@@ -23,3 +23,7 @@ cyberchef:
 # Run the lab image from GitHub Container Registry
 ghcr:
 	docker run --rm -it -p 8080:8080 ghcr.io/codepath/$(IMAGE_NAME):latest
+
+# Build and push to GitHub Container Registry (requires docker login ghcr.io)
+push:
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/codepath/$(IMAGE_NAME):latest -f docker/Dockerfile --push .

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Root-only answer checker for the steganography challenge.
+# Run by the student through `check-answer` -> `sudo -n`, so the target image
+# and password below are NOT readable from inside the container with `cat`.
+set -Eeuo pipefail
+FILE="/home/student/08_H.jpg"
+PASS="NEON"
+if [[ ! -f "$FILE" ]]; then echo "INCORRECT"; exit 1; fi
+out="$(/usr/bin/steghide info "$FILE" -p "$PASS" 2>&1 || true)"
+if echo "$out" | grep -qi "embedded file"; then echo -e "\033[0;32mCORRECT\033[0m: Message encoded successfully. You win!"; exit 0; fi
+echo -e "\033[0;31mINCORRECT\033[0m: No embedded file found."
+exit 1

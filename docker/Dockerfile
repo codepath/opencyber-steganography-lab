@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     steghide chafa python3 \
     wget ca-certificates \
-    unzip less exiftool && \
+    unzip less exiftool sudo && \
     rm -rf /var/lib/apt/lists/*
 
 # 2.2) Create student user
@@ -24,19 +24,23 @@ RUN install -d -m 0755 /usr/local/bin && \
       > /usr/local/bin/serve-files && chmod +x /usr/local/bin/serve-files
 EXPOSE 8080
 
-# 2.4) Minimal checker: prints CORRECT/INCORRECT for steganography challenge
-RUN install -d -m 0755 /usr/local/bin && \
+# 2.4) Answer checker. The real check (target image + password) lives in a
+# root-only script the student runs through `sudo`, so it cannot be read from
+# inside the container with `cat`, and it is COPYed (not inlined in a RUN) so it
+# does not appear in `docker history`. Keep this lab repo PRIVATE: the public
+# image still lets `docker run --user root` read it, which is an accepted limit.
+COPY docker/check-answer-root /opt/lab/check-answer-root
+RUN chown root:root /opt/lab/check-answer-root && \
+    chmod 700 /opt/lab/check-answer-root && \
+    install -d -m 0755 /usr/local/bin && \
     printf '%s\n' \
-'#!/usr/bin/env bash' \
-'set -Eeuo pipefail' \
-'FILE="/home/student/08_H.jpg"' \
-'PASS="NEON"' \
-'if [[ ! -f "$FILE" ]]; then echo "INCORRECT"; exit 1; fi' \
-'out="$(/usr/bin/steghide info "$FILE" -p "$PASS" 2>&1 || true)"' \
-'if echo "$out" | grep -qi "embedded file"; then echo -e "\033[0;32mCORRECT\033[0m: Message encoded successfully. You win!"; exit 0; fi' \
-'echo -e "\033[0;31mINCORRECT\033[0m: No embedded file found."; exit 1' \
-    > /usr/local/bin/check-answer && \
-    chmod +x /usr/local/bin/check-answer
+      '#!/usr/bin/env bash' \
+      'exec sudo -n /opt/lab/check-answer-root' \
+      > /usr/local/bin/check-answer && \
+    chmod 0755 /usr/local/bin/check-answer && \
+    printf '%s\n' 'student ALL=(root) NOPASSWD: /opt/lab/check-answer-root' \
+      > /etc/sudoers.d/check-answer && \
+    chmod 0440 /etc/sudoers.d/check-answer
 
 # 2.5) Switch to student user
 USER student
